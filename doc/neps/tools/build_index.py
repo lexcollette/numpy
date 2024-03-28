@@ -13,8 +13,8 @@ import re
 def render(tpl_path, context):
     path, filename = os.path.split(tpl_path)
     return jinja2.Environment(
-        loader=jinja2.FileSystemLoader(path or './')
-    ).get_template(filename).render(context)
+        loader=jinja2.FileSystemLoader(path or './'), 
+    autoescape=True).get_template(filename).render(context)
 
 def nep_metadata():
     ignore = ('nep-template.rst')

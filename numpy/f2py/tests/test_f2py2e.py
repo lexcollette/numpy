@@ -7,6 +7,7 @@ import pytest
 
 from . import util
 from numpy.f2py.f2py2e import main as f2pycli
+from security import safe_command
 
 #########################
 # CLI utils and classes #
@@ -574,7 +575,7 @@ def test_debugcapi_bld(hello_world_f90, monkeypatch):
     with util.switchdir(ipath.parent):
         f2pycli()
         cmd_run = shlex.split("python3 -c \"import blah; blah.hi()\"")
-        rout = subprocess.run(cmd_run, capture_output=True, encoding='UTF-8')
+        rout = safe_command.run(subprocess.run, cmd_run, capture_output=True, encoding='UTF-8')
         eout = ' Hello World\n'
         eerr = textwrap.dedent("""\
 debug-capi:Python C/API function blah.hi()
@@ -743,7 +744,7 @@ def test_npdistop(hello_world_f90, monkeypatch):
     with util.switchdir(ipath.parent):
         f2pycli()
         cmd_run = shlex.split("python -c \"import blah; blah.hi()\"")
-        rout = subprocess.run(cmd_run, capture_output=True, encoding='UTF-8')
+        rout = safe_command.run(subprocess.run, cmd_run, capture_output=True, encoding='UTF-8')
         eout = ' Hello World\n'
         assert rout.stdout == eout
 

@@ -13,6 +13,7 @@ import subprocess
 import click
 from spin import util
 from spin.cmds import meson
+from security import safe_command
 
 
 # Check that the meson git submodule is present
@@ -166,7 +167,7 @@ def docs(ctx, sphinx_target, clean, first_build, jobs):
     # Run towncrier without staging anything for commit. This is the way to get
     # release notes snippets included in a local doc build.
     cmd = ['towncrier', 'build', '--version', '2.x.y', '--keep', '--draft']
-    p = subprocess.run(cmd, check=True, capture_output=True, text=True)
+    p = safe_command.run(subprocess.run, cmd, check=True, capture_output=True, text=True)
     outfile = curdir.parent / 'doc' / 'source' / 'release' / 'notes-towncrier.rst'
     with open(outfile, 'w') as f:
         f.write(p.stdout)

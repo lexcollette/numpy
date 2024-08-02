@@ -15,10 +15,10 @@ from numpy.testing import (
     assert_, assert_equal, assert_array_equal, assert_raises, HAS_REFCOUNT,
     IS_PYSTON, _OLD_PROMOTION)
 from itertools import permutations
-import random
 
 import hypothesis
 from hypothesis.extra import numpy as hynp
+import secrets
 
 
 
@@ -1303,7 +1303,7 @@ class TestDTypeMakeCanonical:
     def test_structured(self, dtype):
         # Pick 4 of the fields at random.  This will leave empty space in the
         # dtype (since we do not canonicalize it here).
-        field_subset = random.sample(dtype.names, k=4)
+        field_subset = secrets.SystemRandom().sample(dtype.names, k=4)
         dtype_with_empty_space = dtype[field_subset]
         assert dtype_with_empty_space.itemsize == dtype.itemsize
         canonicalized = np.result_type(dtype_with_empty_space)

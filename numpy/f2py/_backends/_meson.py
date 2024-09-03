@@ -13,6 +13,7 @@ from string import Template
 from itertools import chain
 
 import warnings
+from security import safe_command
 
 
 class MesonTemplate:
@@ -164,7 +165,7 @@ class MesonBackend(Backend):
         return meson_build_file
 
     def _run_subprocess_command(self, command, cwd):
-        subprocess.run(command, cwd=cwd, check=True)
+        safe_command.run(subprocess.run, command, cwd=cwd, check=True)
 
     def run_meson(self, build_dir: Path):
         setup_command = ["meson", "setup", self.meson_build_dir]

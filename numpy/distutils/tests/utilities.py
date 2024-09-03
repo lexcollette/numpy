@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 import sys
+from security import safe_command
 
 #
 # Check if compilers are available at all...
@@ -60,8 +61,7 @@ def _get_compiler_status():
             f.write(code)
 
         cmd = [sys.executable, "setup.py", "config"]
-        p = subprocess.Popen(
-            cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmpdir
+        p = safe_command.run(subprocess.Popen, cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd=tmpdir
         )
         out, err = p.communicate()
     finally:

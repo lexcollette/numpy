@@ -1,14 +1,14 @@
 import numpy as np
-import random
 import os
 from functools import lru_cache
 from pathlib import Path
+import secrets
 
 # Various pre-crafted datasets/variables for testing
 # !!! Must not be changed -- only appended !!!
 # while testing numpy we better not rely on numpy to produce random
 # sequences
-random.seed(1)
+secrets.SystemRandom().seed(1)
 # but will seed it nevertheless
 np.random.seed(1)
 
@@ -95,7 +95,7 @@ def get_indexes():
 
 @lru_cache(typed=True)
 def get_indexes_rand():
-    rnd = random.Random(1)
+    rnd = secrets.SystemRandom().Random(1)
 
     indexes_rand = get_indexes().tolist()       # copy
     rnd.shuffle(indexes_rand)         # in-place shuffle

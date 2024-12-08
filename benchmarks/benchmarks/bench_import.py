@@ -3,13 +3,14 @@ from sys import executable
 from timeit import default_timer
 
 from .common import Benchmark
+from security import safe_command
 
 
 class Import(Benchmark):
     timer = default_timer
 
     def execute(self, command):
-        call((executable, '-c', command))
+        safe_command.run(call, (executable, '-c', command))
 
     def time_numpy(self):
         self.execute('import numpy')

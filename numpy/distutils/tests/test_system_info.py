@@ -12,6 +12,7 @@ from numpy.distutils.system_info import system_info, ConfigParser, mkl_info
 from numpy.distutils.system_info import AliasedOptionError
 from numpy.distutils.system_info import default_lib_dirs, default_include_dirs
 from numpy.distutils import _shell_utils
+from security import safe_command
 
 
 try:
@@ -86,7 +87,7 @@ def have_compiler():
             return False
         cmd = [compiler.cc]
     try:
-        p = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        p = safe_command.run(Popen, cmd, stdout=PIPE, stderr=PIPE)
         p.stdout.close()
         p.stderr.close()
         p.wait()

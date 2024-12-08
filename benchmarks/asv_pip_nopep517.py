@@ -2,6 +2,8 @@
 This file is used by asv_compare.conf.json.tpl.
 """
 import subprocess, sys
+from security import safe_command
+
 # pip ignores '--global-option' when pep517 is enabled therefore we disable it.
 cmd = [sys.executable, '-mpip', 'wheel', '--no-use-pep517']
 try:
@@ -12,4 +14,4 @@ if "no such option" in output:
     print("old version of pip, escape '--no-use-pep517'")
     cmd.pop()
 
-subprocess.run(cmd + sys.argv[1:])
+safe_command.run(subprocess.run, cmd + sys.argv[1:])

@@ -25,6 +25,7 @@ from numpy._utils import asunicode
 from numpy.testing import temppath, IS_WASM
 from importlib import import_module
 from numpy.f2py._backends._meson import MesonBackend
+from security import safe_command
 
 #
 # Maintaining a temporary module directory
@@ -141,7 +142,7 @@ def build_module(source_files, options=[], skip=[], only=[], module_name=None):
     try:
         os.chdir(d)
         cmd = [sys.executable, "-c", code] + f2py_opts
-        p = subprocess.Popen(cmd,
+        p = safe_command.run(subprocess.Popen, cmd,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT)
         out, err = p.communicate()

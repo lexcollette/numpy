@@ -133,7 +133,7 @@ elif sys.platform[:5] == 'linux':
         """
         try:
             with open(_proc_pid_stat) as f:
-                l = f.readline().split(' ')
+                l = f.readline(5_000_000).split(' ')
             return int(l[22])
         except Exception:
             return
@@ -160,7 +160,7 @@ if sys.platform[:5] == 'linux':
             _load_time.append(time.time())
         try:
             with open(_proc_pid_stat) as f:
-                l = f.readline().split(' ')
+                l = f.readline(5_000_000).split(' ')
             return int(l[13])
         except Exception:
             return int(100*(time.time()-_load_time[0]))
